@@ -15,12 +15,15 @@ text = response.text
 soup = bs4.BeautifulSoup(text, features="html.parser")
 
 articles = soup.find_all("article")
+
 for article in articles:
-    hubs = article.find_all(class_="tm-article-snippet__hubs-item-link")
+    hubs = article.find_all(class_="tm-publication-hub__link")
     hubs = [hub.text.strip() for hub in hubs]
     for hub in hubs:
         if hub in HUBS:
-            href = article.find(class_="tm-title__link").attrs["href"]
+            href = article.find(class_="tm-title tm-title_h2").find("a")["href"]
+            # href1 = href.find('a')
+            # link = href1["href"]
             title = article.find("h2").find("span").text
             result = f'{title} ==> {url}{href}'
             print(result)
